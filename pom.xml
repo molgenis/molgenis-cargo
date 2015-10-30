@@ -101,7 +101,7 @@
                         </goals>
                         <configuration>
                             <autocommit>true</autocommit>
-                            <sqlCommand>DROP DATABASE omx;</sqlCommand>
+                            <sqlCommand>DROP DATABASE ${db_name};</sqlCommand>
                         </configuration>
                     </execution>
                     <execution>
@@ -112,7 +112,7 @@
                         </goals>
                         <configuration>
                             <autocommit>true</autocommit>
-                            <sqlCommand>CREATE DATABASE omx;</sqlCommand>
+                            <sqlCommand>CREATE DATABASE ${db_name};</sqlCommand>
                             <onError>continue</onError>
                         </configuration>
                     </execution>
