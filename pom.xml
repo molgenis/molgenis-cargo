@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.molgenis</groupId>
     <artifactId>molgenis-cargo</artifactId>
-    <version>1.21.5</version>
+    <version>2.0.0</version>
     <packaging>pom</packaging>
     <name>Molgenis</name>
     <description>MOLGENIS is a collaborative open source project on a mission to generate great software infrastructure for life
@@ -20,9 +20,9 @@
     </scm>
     <developers/>
     <properties>
-        <mysql.version>5.1.37</mysql.version>
+        <psql.version>9.6.0</psql.version>
         <!-- these will be filled in into target/classes/molgenis-server.properties -->
-        <db_name>omx</db_name>
+        <db_name>molgenis</db_name>
         <db_user>molgenis</db_user>
         <db_password>molgenis</db_password>
     </properties>
@@ -45,12 +45,6 @@
                 <configuration>
                     <container>
                         <containerId>tomcat7x</containerId>
-                        <dependencies>
-                            <dependency>
-                                <groupId>mysql</groupId>
-                                <artifactId>mysql-connector-java</artifactId>
-                            </dependency>
-                        </dependencies>
                     </container>
                     <configuration>
                         <properties>
@@ -77,15 +71,15 @@
                 <artifactId>sql-maven-plugin</artifactId>
                 <version>1.5</version>
                 <dependencies>
-                    <dependency>
-                        <groupId>mysql</groupId>
-                        <artifactId>mysql-connector-java</artifactId>
-                        <version>${mysql.version}</version>
-                    </dependency>
-                </dependencies>
+					<dependency>
+            			<groupId>postgresql</groupId>
+            			<artifactId>postgresql</artifactId>
+            			<version>9.6.0</version>
+          			</dependency>
+        		</dependencies>
                 <configuration>
-                    <driver>com.mysql.jdbc.Driver</driver>
-                    <url>jdbc:mysql://localhost/</url>
+                    <driver>org.postgresql.Driver</driver>
+                    <url>jdbc\:postgresql\://localhost/molgenis?reWriteBatchedInserts=true&autosave=CONSERVATIVE</url>
                     <username>${db_user}</username>
                     <password>${db_password}</password>
                     <!-- otherwise it won't run for package type pom -->
@@ -126,11 +120,6 @@
             <artifactId>molgenis-app</artifactId>
             <version>${project.version}</version>
             <type>war</type>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.version}</version>
         </dependency>
     </dependencies>
 </project>

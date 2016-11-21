@@ -2,7 +2,7 @@
 
 This maven project allows you to download a released molgenis war file from maven central, download apache tomcat, 
 and run molgenis locally in tomcat.
-You need java, maven, and a mysql database with a user who's been granted full privileges on the database.
+You need java, maven, and a postgresql database with a user who's been granted full privileges on the database.
 
 For a clean run:
 
