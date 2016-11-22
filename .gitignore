@@ -1,2 +1,7 @@
 target
 src/main/annotation_resources/
+.DS_Store
+.idea/compiler.xml
+.idea/copyright/profiles_settings.xml
+.idea/misc.xml
+.idea/workspace.xml
