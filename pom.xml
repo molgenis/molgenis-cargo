@@ -21,7 +21,7 @@
     <developers/>
 
     <properties>
-        <db_version>9.1-901.jdbc4</db_version>
+        <db_version>9.4.1211</db_version>
         <!-- these will be filled in into target/classes/molgenis-server.properties -->
         <db_name>molgenis</db_name>
         <db_user>molgenis</db_user>
@@ -40,6 +40,7 @@
             </resource>
         </resources>
         <plugins>
+
             <plugin>
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>
@@ -47,6 +48,12 @@
                 <configuration>
                     <container>
                         <containerId>tomcat7x</containerId>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.postgresql</groupId>
+                                <artifactId>postgresql</artifactId>
+                            </dependency>
+                        </dependencies>
                     </container>
                     <configuration>
                         <properties>
@@ -63,74 +70,68 @@
                             </properties>
                         </deployable>
                     </deployables>
-                    <properties>
-                        <cargo.jvmargs/>
-                    </properties>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>sql-maven-plugin</artifactId>
                 <version>1.5</version>
 
                 <dependencies>
-                    <!-- specify the dependent jdbc driver here -->
                     <dependency>
-                        <groupId>postgresql</groupId>
+                        <groupId>org.postgresql</groupId>
                         <artifactId>postgresql</artifactId>
-                        <version>9.1-901.jdbc4</version>
+                        <version>${db_version}</version>
                     </dependency>
                 </dependencies>
 
-                <!-- common configuration shared by all executions -->
                 <configuration>
                     <driver>org.postgresql.Driver</driver>
-                    <url>jdbc:postgresql://localhost:5432:molgenis</url>
+                    <url>jdbc:postgresql://localhost/</url>
+
                     <username>${db_user}</username>
                     <password>${db_password}</password>
-                    <!-- You can comment out username/password configurations and
-                         have maven to look them up in your settings.xml using ${settingsKey}
-                    -->
-                    <settingsKey>sensibleKey</settingsKey>
-                    <!--all executions are ignored if -Dmaven.test.skip=true-->
+
                     <forceMojoExecution>true</forceMojoExecution>
                     <onError>continue</onError>
                 </configuration>
 
                 <executions>
+
                     <execution>
-                        <id>drop-database</id>
-                        <phase>clean</phase>
+                        <id>drop and create</id>
                         <goals>
                             <goal>execute</goal>
                         </goals>
-                        <configuration>
-                            <autocommit>true</autocommit>
-                            <sqlCommand>DROP DATABASE ${db_name};</sqlCommand>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>create-database</id>
                         <phase>clean</phase>
-                        <goals>
-                            <goal>execute</goal>
-                        </goals>
                         <configuration>
+                            <url>jdbc:postgresql://localhost/postgres</url>
                             <autocommit>true</autocommit>
-                            <sqlCommand>CREATE DATABASE ${db_name};</sqlCommand>
+                            <sqlCommand>
+                                drop database ${db_name};
+                                create database  ${db_name};
+                            </sqlCommand>
                             <onError>continue</onError>
                         </configuration>
                     </execution>
+
                 </executions>
             </plugin>
         </plugins>
     </build>
+
     <dependencies>
         <dependency>
             <groupId>org.molgenis</groupId>
             <artifactId>molgenis-app</artifactId>
             <version>${project.version}</version>
             <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${db_version}</version>
         </dependency>
     </dependencies>
 </project>
