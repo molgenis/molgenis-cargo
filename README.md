@@ -1,3 +1,5 @@
+**This project is deprecated. See [Install MOLGENIS with Docker](https://github.com/molgenis/docker/) to install the latest MOLGENIS version.**
+
 # molgenis-cargo
 
 This maven project allows you to download a released molgenis war file from maven central, download apache tomcat, 
